@@ -12,7 +12,7 @@ let cellSize
 let isGameOver
 let intervalID
 let maze = []
-let player = null
+let player = {}
 let enemy = []
 // 敵の数
 let enemyCount
