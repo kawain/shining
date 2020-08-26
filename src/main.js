@@ -1,4 +1,5 @@
 import makeMaze from "./maze.js"
+import image from "./image.jpg"
 
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d")
@@ -6,7 +7,7 @@ const ctx = canvas.getContext("2d")
 const level1 = document.getElementById("level1")
 const level2 = document.getElementById("level2")
 const level3 = document.getElementById("level3")
-
+let count
 let mazeSize
 let cellSize
 let isGameOver
@@ -101,6 +102,7 @@ class Enemy {
 }
 
 function init() {
+    count = 0
     isGameOver = false
     maze = []
     enemy = []
@@ -161,8 +163,11 @@ function drawPlayer() {
 }
 
 function drawEnemy() {
+    count++
     for (const v of enemy) {
-        v.move()
+        if (count % 10 === 0) {
+            v.move()
+        }
         if (player.x === v.x && player.y === v.y) {
             ctx.fillStyle = "orange"
             isGameOver = true
@@ -239,28 +244,41 @@ document.addEventListener("keydown", (e) => {
     }
 })
 
-level1.addEventListener("click", () => {
-    mazeSize = 25
-    cellSize = canvas.width / mazeSize
-    enemyCount = 1
-    init()
-    intervalID = setInterval(draw, 100)
-})
+const img = new Image()
+img.addEventListener("load", () => {
+    level1.disabled = false
+    level2.disabled = false
+    level3.disabled = false
 
-level2.addEventListener("click", () => {
-    mazeSize = 35
-    cellSize = canvas.width / mazeSize
-    enemyCount = 5
-    init()
-    intervalID = setInterval(draw, 100)
-})
+    level1.addEventListener("click", () => {
+        clearInterval(intervalID)
+        mazeSize = 25
+        cellSize = canvas.width / mazeSize
+        enemyCount = 1
+        init()
+        intervalID = setInterval(draw, 20)
+    })
 
-level3.addEventListener("click", () => {
-    mazeSize = 55
-    cellSize = canvas.width / mazeSize
-    enemyCount = 10
-    init()
-    intervalID = setInterval(draw, 100)
-})
+    level2.addEventListener("click", () => {
+        clearInterval(intervalID)
+        mazeSize = 35
+        cellSize = canvas.width / mazeSize
+        enemyCount = 5
+        init()
+        intervalID = setInterval(draw, 20)
+    })
 
+    level3.addEventListener("click", () => {
+        clearInterval(intervalID)
+        mazeSize = 51
+        cellSize = canvas.width / mazeSize
+        enemyCount = 10
+        init()
+        intervalID = setInterval(draw, 20)
+    })
+
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+
+})
+img.src = image
 
